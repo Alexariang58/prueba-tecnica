@@ -1,0 +1,31 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="grid">
+    <label>
+      Nombre
+      <input type="text" formControlName="name" />
+      <small class="error" *ngIf="isInvalid('name')">Requerido</small>
+    </label>
+
+    <label>
+      Precio
+      <input type="number" step="0.01" formControlName="price" />
+      <small class="error" *ngIf="isInvalid('price')">Debe ser >= 0</small>
+    </label>
+
+    <label>
+      Stock
+      <input type="number" formControlName="stock" />
+      <small class="error" *ngIf="isInvalid('stock')">Debe ser >= 0</small>
+    </label>
+  </div>
+
+  <div class="actions">
+    <app-button type="submit" [disabled]="form.invalid || saving" [loading]="saving">
+      Crear
+    </app-button>
+
+    <app-button variant="secondary" type="button" (click)="reset()" [disabled]="saving">
+      Limpiar
+    </app-button>
+  </div>
+</form>

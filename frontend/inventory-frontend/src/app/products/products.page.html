@@ -1,0 +1,26 @@
+<div class="page">
+  <h1>Inventario de Productos</h1>
+
+  <section class="card">
+    <h2>Crear producto</h2>
+    <app-product-form [saving]="saving" (create)="onCreate($event)"></app-product-form>
+  </section>
+
+  <section class="card">
+    <div class="header-row">
+      <h2>Productos</h2>
+      <app-button variant="secondary" type="button" (click)="load()" [disabled]="loading">
+        Refrescar
+      </app-button>
+    </div>
+
+    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+
+    <app-products-list
+      [products]="products"
+      [loading]="loading"
+      [deletingId]="deletingId"
+      (delete)="onDelete($event)"
+    ></app-products-list>
+  </section>
+</div>

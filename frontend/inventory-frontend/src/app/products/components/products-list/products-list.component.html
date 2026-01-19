@@ -1,0 +1,32 @@
+<p *ngIf="loading">Cargando...</p>
+<p *ngIf="!loading && products.length === 0">No hay productos aún.</p>
+
+<table *ngIf="!loading && products.length > 0">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Stock</th>
+      <th style="width: 140px;"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let p of products">
+      <td>{{ p.name }}</td>
+      <td>{{ p.price }}</td>
+      <td>{{ p.stock }}</td>
+      <td class="right">
+        <app-button
+          variant="danger"
+          type="button"
+          (click)="delete.emit(p.id)"
+          [loading]="deletingId === p.id"
+          [disabled]="deletingId === p.id"
+        >
+          Eliminar
+        </app-button>
+      </td>
+    </tr>
+  </tbody>
+</table>
