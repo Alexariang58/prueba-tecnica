@@ -12,6 +12,8 @@ describe('ProductsService', () => {
     name: 'Test Product',
     price: 1000,
     stock: 10,
+    createdAt: '2026-01-19T00:00:00.000Z',
+    updatedAt: '2026-01-19T00:00:00.000Z',
   };
 
   beforeEach(() => {
