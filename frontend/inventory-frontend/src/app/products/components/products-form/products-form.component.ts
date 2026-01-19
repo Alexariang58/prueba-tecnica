@@ -41,6 +41,17 @@ export class ProductFormComponent {
     ]),
   });
 
+  priceDisplay = '';
+
+  onPriceInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const raw = input.value.replace(/\./g, '').replace(/[^0-9]/g, '');
+    const num = raw ? parseInt(raw, 10) : null;
+    this.form.controls.price.setValue(num);
+    this.priceDisplay = num !== null ? num.toLocaleString('es-CO') : '';
+    input.value = this.priceDisplay;
+  }
+
   submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -57,6 +68,7 @@ export class ProductFormComponent {
 
   reset(): void {
     this.form.reset({ name: '', price: null, stock: null });
+    this.priceDisplay = '';
   }
 
   isInvalid(controlName: keyof ProductForm['controls']): boolean {

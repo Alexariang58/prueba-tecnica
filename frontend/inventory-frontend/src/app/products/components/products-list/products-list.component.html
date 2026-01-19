@@ -14,8 +14,8 @@
   <tbody>
     <tr *ngFor="let p of products">
       <td>{{ p.name }}</td>
-      <td>{{ p.price }}</td>
-      <td>{{ p.stock }}</td>
+      <td>{{ formatPrice(p.price) }}</td>
+      <td>{{ formatNumber(p.stock) }}</td>
       <td class="right">
         <app-button
           variant="danger"

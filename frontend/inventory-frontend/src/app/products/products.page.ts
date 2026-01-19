@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { finalize } from 'rxjs';
 import { ProductsService, CreateProductPayload } from './products.service';
@@ -29,6 +30,16 @@ export class ProductsPageComponent implements OnInit {
     this.load();
   }
 
+  private extractErrorMessage(err: unknown, fallback: string): string {
+    if (err instanceof HttpErrorResponse) {
+      const body = err.error;
+      if (body?.message) {
+        return Array.isArray(body.message) ? body.message.join(', ') : body.message;
+      }
+    }
+    return fallback;
+  }
+
   load(): void {
     this.errorMsg = '';
     this.loading = true;
@@ -38,7 +49,7 @@ export class ProductsPageComponent implements OnInit {
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: (data) => (this.products = data),
-        error: () => (this.errorMsg = 'No se pudo cargar la lista de productos.'),
+        error: (err) => (this.errorMsg = this.extractErrorMessage(err, 'No se pudo cargar la lista de productos.')),
       });
   }
 
@@ -54,7 +65,7 @@ export class ProductsPageComponent implements OnInit {
           this.formComp?.reset();
           this.load();
         },
-        error: () => (this.errorMsg = 'No se pudo crear el producto.'),
+        error: (err) => (this.errorMsg = this.extractErrorMessage(err, 'No se pudo crear el producto.')),
       });
   }
 
@@ -70,7 +81,7 @@ export class ProductsPageComponent implements OnInit {
       .pipe(finalize(() => (this.deletingId = null)))
       .subscribe({
         next: () => this.load(),
-        error: () => (this.errorMsg = 'No se pudo eliminar el producto.'),
+        error: (err) => (this.errorMsg = this.extractErrorMessage(err, 'No se pudo eliminar el producto.')),
       });
   }
 }

@@ -8,13 +8,20 @@
 
     <label>
       Precio
-      <input type="number" step="0.01" formControlName="price" />
+      <input
+        type="text"
+        inputmode="numeric"
+        class="numeric-input"
+        [value]="priceDisplay"
+        (input)="onPriceInput($event)"
+        placeholder="0"
+      />
       <small class="error" *ngIf="isInvalid('price')">Debe ser >= 0</small>
     </label>
 
     <label>
       Stock
-      <input type="number" formControlName="stock" />
+      <input type="number" class="numeric-input" formControlName="stock" />
       <small class="error" *ngIf="isInvalid('stock')">Debe ser >= 0</small>
     </label>
   </div>

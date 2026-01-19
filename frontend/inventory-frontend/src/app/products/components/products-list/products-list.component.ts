@@ -16,4 +16,13 @@ export class ProductsListComponent {
   @Input() deletingId: number | null = null;
 
   @Output() delete = new EventEmitter<number>();
+
+  formatPrice(value: number): string {
+    const formatted = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return '$ ' + formatted;
+  }
+
+  formatNumber(value: number): string {
+    return value.toLocaleString('es-CO');
+  }
 }

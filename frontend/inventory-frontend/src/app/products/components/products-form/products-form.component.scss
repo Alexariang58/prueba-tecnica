@@ -15,6 +15,10 @@ input {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 10px;
+
+  &.numeric-input {
+    text-align: right;
+  }
 }
 
 .actions {
