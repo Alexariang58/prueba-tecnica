@@ -1,59 +1,76 @@
-# InventoryFrontend
+# Inventory Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.14.
+Aplicacion Angular para la gestion de inventario de productos.
 
-## Development server
+## Configuracion
 
-To start a local development server, run:
+El frontend usa un proxy para comunicarse con el API Gateway.
 
-```bash
-ng serve
+**proxy.conf.json:**
+```json
+{
+  "/api": {
+    "target": "http://localhost:3000",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Comandos
 
 ```bash
-ng generate component component-name
+# Instalar dependencias
+npm install
+
+# Desarrollo (puerto 4200)
+npm start
+
+# Build produccion
+npm run build
+
+# Tests unitarios
+npm test
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Tests
 
-```bash
-ng generate --help
+| Archivo | Cobertura |
+|---------|-----------|
+| products.service.spec.ts | getAll, create, remove |
+
+**Casos de prueba:**
+- GET /api/products retorna lista de productos
+- POST /api/products crea un producto
+- DELETE /api/products/:id elimina un producto
+
+## Estructura del proyecto
+
+```
+src/app/
+├── products/
+│   ├── components/
+│   │   ├── products-form/      # Formulario para crear productos
+│   │   └── products-list/      # Lista de productos con eliminacion
+│   ├── models/
+│   │   └── products.interfaces.ts
+│   ├── products.page.ts        # Pagina principal de productos
+│   ├── products.page.html
+│   ├── products.page.scss
+│   ├── products.routes.ts
+│   └── products.service.ts     # Servicio HTTP
+├── shared/
+│   └── ui/
+│       └── button/             # Componente de boton reutilizable
+├── app.ts
+├── app.config.ts
+└── app.routes.ts
 ```
 
-## Building
+## Funcionalidades
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Listar productos con nombre, precio formateado y stock
+- Crear nuevos productos con validacion de formulario
+- Eliminar productos con confirmacion
+- Manejo de errores con mensajes del backend
+- Formato de precios en pesos colombianos ($ 1.000.000)
