@@ -34,13 +34,15 @@ export class ProductsService {
     }
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number): Promise<{ deleted: boolean }> {
     try {
       const result = await this.productsRepo.delete(id);
 
       if (result.affected === 0) {
         throw rpc.notFound(`Product with id ${id} not found`);
       }
+
+      return { deleted: true };
     } catch (err: unknown) {
       if (err instanceof RpcException) throw err;
 

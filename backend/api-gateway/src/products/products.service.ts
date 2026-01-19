@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -7,6 +7,8 @@ import { Product } from './types/product.type';
 
 @Injectable()
 export class ProductsService {
+  private readonly logger = new Logger(ProductsService.name);
+
   constructor(@Inject('PRODUCTS_MS') private readonly client: ClientProxy) {}
 
   async findAll(): Promise<Product[]> {
@@ -30,11 +32,13 @@ export class ProductsService {
   }
 
   async remove(id: number): Promise<void> {
+    this.logger.log(`Sending delete_product - id: ${id}, type: ${typeof id}`);
     try {
       await firstValueFrom(
         this.client.send<void>({ cmd: 'delete_product' }, id),
       );
     } catch (err) {
+      this.logger.error('Error in delete_product', err);
       mapRpcToHttp(err);
     }
   }
